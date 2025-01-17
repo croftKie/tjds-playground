@@ -1,53 +1,53 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  decrement,
-  increment,
-  incrementByAmount,
-  selectCount,
-} from './redux/counterSlice';
-import './css/App.css';
+import React, { useState } from "react";
 
 export default function App() {
-  const count = useSelector(selectCount);
-  const dispatch = useDispatch();
-  const [incrementAmount, setIncrementAmount] = useState('2');
+  // Imports
 
-  const incrementValue = Number(incrementAmount) || 0;
+  // Functions
+
+  // Styles
+  const playground = {
+    display: "flex",
+    height: "100vh",
+  };
+  const options = {
+    height: "100%",
+    width: "35%",
+    display: "flex",
+    flexDirection: "column",
+  };
+  const componentTree = {
+    height: "50%",
+    width: "100%",
+  };
+  const optionsTree = {
+    height: "50%",
+    width: "100%",
+  };
+
+  const content = {
+    height: "100%",
+    width: "100%",
+  };
+  const canvas = {
+    height: "80%",
+    width: "100%",
+  };
+  const information = {
+    height: "20%",
+    width: "100%",
+  };
 
   return (
-<>
-  <div className="row">
-<button
-  className='button'
-  aria-label="Decrement value"
-  onClick={() => dispatch(decrement())}
->
-  -
-</button>
-<span className="value">{count}</span>
-<button
-  className="button"
-  aria-label="Increment value"
-  onClick={() => dispatch(increment())}
->
-  +
-</button>
-  </div>
-  <div className="row">
-<input
-  className="textbox"
-  aria-label="Set increment amount"
-  value={incrementAmount}
-  onChange={(e) => setIncrementAmount(e.target.value)}
-/>
-<button
-  className="button"
-  onClick={() => dispatch(incrementByAmount(incrementValue))}
->
-  Add Amount
-</button>
-  </div>
-</>
+    <div style={playground}>
+      <div style={options}>
+        <div style={componentTree}></div>
+        <div style={optionsTree}></div>
+      </div>
+      <div style={content}>
+        <div style={canvas}></div>
+        <div style={information}></div>
+      </div>
+    </div>
   );
 }
