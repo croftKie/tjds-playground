@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import TabBlock from "./components/TabBlock";
 export default function App() {
   // Imports
 
@@ -41,12 +41,31 @@ export default function App() {
   return (
     <div style={playground}>
       <div style={options}>
-        <div style={componentTree}></div>
-        <div style={optionsTree}></div>
+        <div style={componentTree}>
+          <TabBlock _tabs={[{ name: "Component Tree", isActive: true }]} />
+        </div>
+        <div style={optionsTree}>
+          <TabBlock
+            _tabs={[
+              { name: "Objects", isActive: true },
+              { name: "Animations", isActive: false },
+            ]}
+          />
+        </div>
       </div>
       <div style={content}>
-        <div style={canvas}></div>
-        <div style={information}></div>
+        <div style={canvas}>
+          <TabBlock
+            _tabs={[
+              { name: "Primitives", isActive: true },
+              { name: "Elements", isActive: false },
+              { name: "Physics", isActive: false },
+            ]}
+          />
+        </div>
+        <div style={information}>
+          <TabBlock _tabs={[{ name: "Information Card", isActive: true }]} />
+        </div>
       </div>
     </div>
   );
