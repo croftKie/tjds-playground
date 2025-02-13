@@ -4,7 +4,15 @@ export default function App() {
   // default variables
   const primDefault = {
     name: "",
-    settings: { width: "40px", height: "40px", backgroundColor: "pink" },
+    settings: {
+      top: "50px",
+      left: "50px",
+      width: "40px",
+      height: "40px",
+      backgroundColor: "pink",
+      position: "relative",
+      borderRadius: "0px",
+    },
     animations: { backgroundColor: "blue" },
     obj: () => {
       return <div style={primDefault.settings}></div>;
@@ -16,6 +24,20 @@ export default function App() {
   const [activePrimComponent, setActivePrimComponent] = useState(0);
 
   // Functions
+
+  const updateObject = (objectIndex = 0, key = "width", value = 0) => {
+    console.log(objectIndex);
+    const tempObject = { ...primObjects[objectIndex] };
+    const tempSettings = { ...tempObject.settings };
+    tempSettings[key] = `${value}px`;
+    tempObject.settings = tempSettings;
+    tempObject.obj = () => {
+      return <div style={tempObject.settings}></div>;
+    };
+    primObjects.splice(objectIndex, 1);
+    setPrimObjects([...primObjects, tempObject]);
+    console.log([...primObjects, tempObject]);
+  };
 
   const onClickAddNew = () => {
     setPrimObjects([...primObjects, primDefault]);
@@ -59,6 +81,11 @@ export default function App() {
     alignItems: "end",
     height: "40px",
   };
+  const activeRow = {
+    backgroundColor: "#FFFF00",
+    color: "white,",
+    borderRadius: "6px",
+  };
   const componentLine = {
     width: "10px",
     height: "100%",
@@ -78,12 +105,22 @@ export default function App() {
         <div style={componentLine}></div>
         <div className="col">
           <div
-            style={{
-              display: "flex",
-              alignItems: "end",
-              gap: "10px",
-              cursor: "pointer",
-            }}
+            style={
+              activePrimComponent === i
+                ? {
+                    ...activeRow,
+                    display: "flex",
+                    alignItems: "end",
+                    gap: "10px",
+                    cursor: "pointer",
+                  }
+                : {
+                    display: "flex",
+                    alignItems: "end",
+                    gap: "10px",
+                    cursor: "pointer",
+                  }
+            }
             onClick={() => {
               setActivePrimComponent(i);
             }}
@@ -108,25 +145,34 @@ export default function App() {
     return (
       <>
         {keys.map((el, index) => {
-          return (
-            <div
-              className="setting"
-              style={{
-                width: "100%",
-                height: "40px",
-                display: "flex",
-                padding: "10px",
-                gap: "12px",
-              }}
-            >
-              <p>{el}</p>
-              <input
-                type="text"
-                style={{ width: "40px" }}
-                placeholder={values[index]}
-              />
-            </div>
-          );
+          if (el !== "position") {
+            return (
+              <div
+                className="setting"
+                style={{
+                  width: "100%",
+                  height: "40px",
+                  display: "flex",
+                  padding: "10px",
+                  gap: "12px",
+                }}
+              >
+                <p>{el}</p>
+                <input
+                  type="text"
+                  style={{ width: "40px" }}
+                  placeholder={values[index]}
+                  onInput={(e) => {
+                    updateObject(
+                      activePrimComponent,
+                      el,
+                      e.currentTarget.value
+                    );
+                  }}
+                />
+              </div>
+            );
+          }
         })}
       </>
     );
