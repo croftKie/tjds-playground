@@ -6,6 +6,9 @@ export default function App() {
     name: "",
     settings: { width: "40px", height: "40px", backgroundColor: "pink" },
     animations: { backgroundColor: "blue" },
+    obj: () => {
+      return <div style={primDefault.settings}></div>;
+    },
   };
 
   // Variables & State
@@ -128,6 +131,15 @@ export default function App() {
       </>
     );
   };
+  const canvasArea = (primObjects) => {
+    return (
+      <div className="canvasArea" style={{ width: "100%", height: "100%" }}>
+        {primObjects.map((el) => {
+          return el.obj();
+        })}
+      </div>
+    );
+  };
 
   return (
     <div style={playground}>
@@ -179,7 +191,9 @@ export default function App() {
               // { name: "Elements", isActive: false },
               // { name: "Physics", isActive: false },
             ]}
-          />
+          >
+            {canvasArea(primObjects)}
+          </TabBlock>
         </div>
         <div style={information}>
           <TabBlock _tabs={[{ name: "Information Card", isActive: true }]} />
