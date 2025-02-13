@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 export default function TabBlock({
   _tabs = [{ name: "Component Tree", isActive: true }],
+  children,
 }) {
   // Variables
   const [allTabs, setAllTabs] = useState(_tabs);
@@ -75,7 +76,7 @@ export default function TabBlock({
           );
         })}
       </div>
-      <div style={tabContent}></div>
+      <div style={tabContent}>{children}</div>
     </div>
   );
 }
