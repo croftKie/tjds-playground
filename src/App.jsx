@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import TabBlock from "./components/TabBlock";
+import { DesktopNavbar } from "./components/Components";
 export default function App() {
   // default variables
   const primDefault = {
@@ -18,29 +19,42 @@ export default function App() {
       return <div style={primDefault.settings}></div>;
     },
   };
-
-  // Variables & State
-  const [primObjects, setPrimObjects] = useState([primDefault]);
+  // State
+  const [componentDataList, setComponentDataList] = useState([]);
   const [activePrimComponent, setActivePrimComponent] = useState(0);
 
+  // Variables
+
   // Functions
-
-  const updateObject = (objectIndex = 0, key = "width", value = 0) => {
-    console.log(objectIndex);
-    const tempObject = { ...primObjects[objectIndex] };
-    const tempSettings = { ...tempObject.settings };
-    tempSettings[key] = `${value}px`;
-    tempObject.settings = tempSettings;
-    tempObject.obj = () => {
-      return <div style={tempObject.settings}></div>;
+  const setComponentData = (
+    id,
+    name,
+    type,
+    active,
+    jsx,
+    options = [
+      {
+        optionId: "",
+        optionKey: "",
+        optionValue: "",
+      },
+    ],
+    animations = [
+      {
+        animationId: "",
+        animationData: [{ animationDataKey: "" }],
+      },
+    ]
+  ) => {
+    return {
+      componentId: id,
+      componentName: name,
+      componentType: type,
+      componentActive: active,
+      componentJsx: jsx,
+      options: options,
+      animations: animations,
     };
-    primObjects.splice(objectIndex, 1);
-    setPrimObjects([...primObjects, tempObject]);
-    console.log([...primObjects, tempObject]);
-  };
-
-  const onClickAddNew = () => {
-    setPrimObjects([...primObjects, primDefault]);
   };
 
   // Styles
@@ -50,7 +64,7 @@ export default function App() {
   };
   const options = {
     height: "100%",
-    width: "35%",
+    width: "30%",
     display: "flex",
     flexDirection: "column",
   };
@@ -62,7 +76,6 @@ export default function App() {
     height: "50%",
     width: "100%",
   };
-
   const content = {
     height: "100%",
     width: "100%",
@@ -75,76 +88,52 @@ export default function App() {
     height: "20%",
     width: "100%",
   };
-
-  const row = {
-    display: "flex",
-    alignItems: "end",
-    height: "40px",
-  };
   const activeRow = {
     backgroundColor: "#FFFF00",
-    color: "white,",
+    border: "2px solid black",
     borderRadius: "6px",
-  };
-  const componentLine = {
-    width: "10px",
-    height: "100%",
-    borderRight: "1px solid black",
-  };
-  const line = {
-    width: "20px",
-    height: "40px",
-    borderBottom: "1px solid black",
   };
 
   // Components
-
-  const ComponentLineItem = (i) => {
+  const ComponentLineItem = (el, i) => {
     return (
-      <div style={row}>
-        <div style={componentLine}></div>
-        <div className="col">
-          <div
-            style={
-              activePrimComponent === i
-                ? {
-                    ...activeRow,
-                    display: "flex",
-                    alignItems: "end",
-                    gap: "10px",
-                    cursor: "pointer",
-                  }
-                : {
-                    display: "flex",
-                    alignItems: "end",
-                    gap: "10px",
-                    cursor: "pointer",
-                  }
-            }
-            onClick={() => {
-              setActivePrimComponent(i);
-            }}
-          >
-            <div style={line}></div>
-            <div className="item">ITEM ONE</div>
-          </div>
-        </div>
+      <div
+        style={
+          activePrimComponent === i
+            ? {
+                ...activeRow,
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                cursor: "pointer",
+                height: "50px",
+                width: "90%",
+              }
+            : {
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                cursor: "pointer",
+                height: "50px",
+                width: "90%",
+              }
+        }
+        onClick={() => {
+          setActivePrimComponent(i);
+        }}
+      >
+        <img />
+        <div className="item">{el.componentName}</div>
+        <div className="item">{">"}</div>
       </div>
     );
   };
-  const setting = (primObject) => {
-    const { settings } = primObject;
-    let keys = [];
-    let values = [];
-
-    if (settings) {
-      keys = Object.keys(settings);
-      values = Object.values(settings);
-    }
+  const settings = (options) => {
+    console.log(options);
 
     return (
       <>
-        {keys.map((el, index) => {
+        {options.map((el, index) => {
           if (el !== "position") {
             return (
               <div
@@ -177,44 +166,54 @@ export default function App() {
       </>
     );
   };
-  const canvasArea = (primObjects) => {
+  const canvasArea = (jsx) => {
     return (
-      <div className="canvasArea" style={{ width: "100%", height: "100%" }}>
-        {primObjects.map((el) => {
-          return el.obj();
-        })}
+      <div
+        className="canvasArea"
+        style={{ width: "100%", height: "100%", padding: "1%" }}
+      >
+        {jsx()}
       </div>
     );
   };
+
+  useLayoutEffect(() => {
+    let array = [];
+    array.push(
+      setComponentData(
+        0,
+        "Desktop Nav Bar",
+        "Web",
+        false,
+        DesktopNavbar,
+        [],
+        []
+      )
+    );
+    setComponentDataList(array);
+  }, []);
 
   return (
     <div style={playground}>
       <div style={options}>
         <div className="component-tree" style={componentTree}>
-          <TabBlock _tabs={[{ name: "Component Tree", isActive: true }]}>
+          <TabBlock _tabs={[{ name: "Components", isActive: true }]}>
             <div
               style={{
                 display: "flex",
-                width: "100%",
-                height: "15px",
-                justifyContent: "flex-end",
-                padding: "8px",
+                flexDirection: "column",
+                alignItems: "center",
+                paddingTop: "2%",
               }}
             >
-              <h3 onClick={onClickAddNew}>Add New</h3>
+              {componentDataList.map((el, i) => {
+                return ComponentLineItem(el, i);
+              })}
             </div>
-            {primObjects.map((el, i) => {
-              return ComponentLineItem(i);
-            })}
           </TabBlock>
         </div>
         <div style={optionsTree}>
-          <TabBlock
-            _tabs={[
-              { name: "Settings", isActive: true },
-              { name: "Animations", isActive: false },
-            ]}
-          >
+          <TabBlock _tabs={[{ name: "Options", isActive: true }]}>
             <div
               style={{
                 height: "100%",
@@ -224,21 +223,23 @@ export default function App() {
                 padding: "16px",
               }}
             >
-              {setting(primObjects[activePrimComponent])}
+              {componentDataList.length > 0 ? (
+                settings(componentDataList[activePrimComponent].options)
+              ) : (
+                <></>
+              )}
             </div>
           </TabBlock>
         </div>
       </div>
       <div style={content}>
         <div style={canvas}>
-          <TabBlock
-            _tabs={[
-              { name: "Primitives", isActive: true },
-              // { name: "Elements", isActive: false },
-              // { name: "Physics", isActive: false },
-            ]}
-          >
-            {canvasArea(primObjects)}
+          <TabBlock _tabs={[{ name: "Playground", isActive: true }]}>
+            {componentDataList.length > 0 ? (
+              canvasArea(componentDataList[activePrimComponent].componentJsx)
+            ) : (
+              <></>
+            )}
           </TabBlock>
         </div>
         <div style={information}>
