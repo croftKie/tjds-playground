@@ -58,4 +58,6 @@ function MobileNavbar() {
   );
 }
 
+function VerticalCard() {}
+
 export { DesktopNavbar };

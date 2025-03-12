@@ -60,13 +60,16 @@ export default function App() {
   // Styles
   const playground = {
     display: "flex",
-    height: "95vh",
+    height: "100vh",
+    padding: "1%",
+    gap: "1%",
   };
   const options = {
     height: "100%",
-    width: "30%",
+    width: "25%",
     display: "flex",
     flexDirection: "column",
+    gap: "1%",
   };
   const componentTree = {
     height: "50%",
@@ -79,6 +82,9 @@ export default function App() {
   const content = {
     height: "100%",
     width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    gap: "1%",
   };
   const canvas = {
     height: "80%",
@@ -96,6 +102,10 @@ export default function App() {
 
   // Components
   const ComponentLineItem = (el, i) => {
+    const itemStyles = {
+      fontSize: "1em",
+    };
+
     return (
       <div
         style={
@@ -106,25 +116,34 @@ export default function App() {
                 alignItems: "center",
                 gap: "10px",
                 cursor: "pointer",
-                height: "50px",
+                height: "40px",
                 width: "90%",
+                justifyContent: "space-between",
+                padding: "0% 1% 0% 1%",
               }
             : {
                 display: "flex",
                 alignItems: "center",
                 gap: "10px",
                 cursor: "pointer",
-                height: "50px",
+                height: "40px",
                 width: "90%",
+                justifyContent: "space-between",
               }
         }
         onClick={() => {
           setActivePrimComponent(i);
         }}
       >
-        <img />
-        <div className="item">{el.componentName}</div>
-        <div className="item">{">"}</div>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <img />
+          <div className="item" style={itemStyles}>
+            {el.componentName}
+          </div>
+        </div>
+        <div className="item" style={itemStyles}>
+          {">"}
+        </div>
       </div>
     );
   };
@@ -197,7 +216,12 @@ export default function App() {
     <div style={playground}>
       <div style={options}>
         <div className="component-tree" style={componentTree}>
-          <TabBlock _tabs={[{ name: "Components", isActive: true }]}>
+          <TabBlock
+            _tabs={[{ name: "Components", isActive: true }]}
+            backgroundColor="rgb(30, 30, 30)"
+            border="1px solid white"
+            fontColor="white"
+          >
             <div
               style={{
                 display: "flex",
@@ -213,7 +237,12 @@ export default function App() {
           </TabBlock>
         </div>
         <div style={optionsTree}>
-          <TabBlock _tabs={[{ name: "Options", isActive: true }]}>
+          <TabBlock
+            _tabs={[{ name: "Options", isActive: true }]}
+            backgroundColor="rgb(30, 30, 30)"
+            border="1px solid white"
+            fontColor="white"
+          >
             <div
               style={{
                 height: "100%",
@@ -243,7 +272,12 @@ export default function App() {
           </TabBlock>
         </div>
         <div style={information}>
-          <TabBlock _tabs={[{ name: "Information Card", isActive: true }]} />
+          <TabBlock
+            _tabs={[{ name: "Information Card", isActive: true }]}
+            backgroundColor="rgb(30, 30, 30)"
+            border="1px solid white"
+            fontColor="white"
+          />
         </div>
       </div>
     </div>
