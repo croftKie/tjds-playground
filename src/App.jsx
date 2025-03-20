@@ -1,28 +1,11 @@
 import React, { useLayoutEffect, useState } from "react";
 import TabBlock from "./components/TabBlock";
-import { DesktopNavbar } from "./components/Components";
+import { DesktopNavbar, VerticalCard } from "./components/Components";
 export default function App() {
-  // default variables
-  const primDefault = {
-    name: "",
-    settings: {
-      top: "50px",
-      left: "50px",
-      width: "40px",
-      height: "40px",
-      backgroundColor: "pink",
-      position: "relative",
-      borderRadius: "0px",
-    },
-    animations: { backgroundColor: "blue" },
-    obj: () => {
-      return <div style={primDefault.settings}></div>;
-    },
-  };
   // State
   const [componentDataList, setComponentDataList] = useState([]);
   const [activePrimComponent, setActivePrimComponent] = useState(0);
-
+  const [hover, setHover] = useState(false);
   // Variables
 
   // Functions
@@ -55,6 +38,19 @@ export default function App() {
       options: options,
       animations: animations,
     };
+  };
+  const updateObject = (activePrimComp, elementToChange, ValueToAdd, index) => {
+    const tempEl = { ...elementToChange };
+    tempEl.optionValue = ValueToAdd;
+
+    const tempActive = { ...componentDataList[activePrimComp] };
+    tempActive.options[index] = tempEl;
+
+    const tempList = [...componentDataList];
+    tempList[activePrimComp] = tempActive;
+    setComponentDataList([...tempList]);
+
+    console.log(componentDataList[activePrimComp]);
   };
 
   // Styles
@@ -105,7 +101,7 @@ export default function App() {
     const itemStyles = {
       fontSize: "1em",
     };
-
+    console.log(hover);
     return (
       <div
         style={
@@ -120,6 +116,23 @@ export default function App() {
                 width: "90%",
                 justifyContent: "space-between",
                 padding: "0% 1% 0% 1%",
+                color: "black",
+              }
+            : hover
+            ? {
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                cursor: "pointer",
+                height: "40px",
+                width: "89%",
+                justifyContent: "space-between",
+                border: "2px solid black",
+                borderRadius: "6px",
+                color: "black",
+                backgroundColor: "white",
+                padding: "0% 1% 0% 1%",
+                boxShadow: "2px 2px 0px 0px rgba(255,255,0,1)",
               }
             : {
                 display: "flex",
@@ -127,12 +140,22 @@ export default function App() {
                 gap: "10px",
                 cursor: "pointer",
                 height: "40px",
-                width: "90%",
+                width: "89%",
                 justifyContent: "space-between",
+                border: "2px solid white",
+                borderRadius: "6px",
+                color: "white",
+                padding: "0% 1% 0% 1%",
               }
         }
         onClick={() => {
           setActivePrimComponent(i);
+        }}
+        onMouseEnter={() => {
+          setHover(true);
+        }}
+        onMouseLeave={() => {
+          setHover(false);
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
@@ -148,50 +171,49 @@ export default function App() {
     );
   };
   const settings = (options) => {
-    console.log(options);
-
     return (
       <>
         {options.map((el, index) => {
-          if (el !== "position") {
-            return (
-              <div
-                className="setting"
-                style={{
-                  width: "100%",
-                  height: "40px",
-                  display: "flex",
-                  padding: "10px",
-                  gap: "12px",
+          return (
+            <div
+              key={el.optionId}
+              className="setting"
+              style={{
+                width: "100%",
+                height: "40px",
+                display: "flex",
+                padding: "10px",
+                gap: "12px",
+                color: "white",
+              }}
+            >
+              <p>{el.optionKey}</p>
+              <input
+                type="text"
+                style={{ width: "100%" }}
+                placeholder={el.optionValue}
+                onInput={(e) => {
+                  updateObject(
+                    activePrimComponent,
+                    el,
+                    e.currentTarget.value,
+                    index
+                  );
                 }}
-              >
-                <p>{el}</p>
-                <input
-                  type="text"
-                  style={{ width: "40px" }}
-                  placeholder={values[index]}
-                  onInput={(e) => {
-                    updateObject(
-                      activePrimComponent,
-                      el,
-                      e.currentTarget.value
-                    );
-                  }}
-                />
-              </div>
-            );
-          }
+              />
+            </div>
+          );
         })}
       </>
     );
   };
-  const canvasArea = (jsx) => {
+  const canvasArea = (jsx, options, animations) => {
     return (
       <div
         className="canvasArea"
         style={{ width: "100%", height: "100%", padding: "1%" }}
       >
-        {jsx()}
+        {jsx(options, animations)}
       </div>
     );
   };
@@ -205,7 +227,36 @@ export default function App() {
         "Web",
         false,
         DesktopNavbar,
-        [],
+        [
+          { optionId: 0, optionKey: "backgroundColor", optionValue: "white" },
+          {
+            optionId: 0,
+            optionKey: "businessName",
+            optionValue: "The Jump Digital School",
+          },
+          { optionId: 0, optionKey: "borderRadius", optionValue: "6px" },
+        ],
+        []
+      )
+    );
+    array.push(
+      setComponentData(
+        0,
+        "Vertical Card",
+        "Web",
+        false,
+        VerticalCard,
+        [
+          { optionId: 0, optionKey: "backgroundColor", optionValue: "pink" },
+          {
+            optionId: 0,
+            optionKey: "imageSrc",
+            optionValue:
+              "https://images.unsplash.com/photo-1505330622279-bf7d7fc918f4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          },
+          { optionId: 0, optionKey: "fontFamily", optionValue: "Arial" },
+          { optionId: 0, optionKey: "borderRadius", optionValue: "6px" },
+        ],
         []
       )
     );
@@ -228,6 +279,7 @@ export default function App() {
                 flexDirection: "column",
                 alignItems: "center",
                 paddingTop: "2%",
+                gap: "5px",
               }}
             >
               {componentDataList.map((el, i) => {
@@ -265,7 +317,11 @@ export default function App() {
         <div style={canvas}>
           <TabBlock _tabs={[{ name: "Playground", isActive: true }]}>
             {componentDataList.length > 0 ? (
-              canvasArea(componentDataList[activePrimComponent].componentJsx)
+              canvasArea(
+                componentDataList[activePrimComponent].componentJsx,
+                componentDataList[activePrimComponent].options,
+                componentDataList[activePrimComponent].animations
+              )
             ) : (
               <></>
             )}
